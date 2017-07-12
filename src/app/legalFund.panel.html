@@ -1,0 +1,27 @@
+
+<h1>Schroder International Selection Fund Asian Opportunities</h1>
+
+<div>   
+    <div style="display: inline-block;" class="verticalMenu">
+        <sub-panel-title [title]="'DISTRIBUTION BY CURRENCY'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'currRepartition'"></sub-panel-title>
+        <sub-panel-title [title]="'CONTRIBUTING TRANSACTIONS'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'transactions'"></sub-panel-title>
+        <sub-panel-title [title]="'HISTORY EVOLUTION'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'historyEvol'"></sub-panel-title>
+    </div>
+    <div style="display: inline-block">
+        <tab-group [selectedIndex]="selectedTabIndex" (onTabSelectionChange)="onTabSelectionChange($event)">
+            <tab title="LAST NAV">
+                <dyn-table [tableMetadata]='shareClassTableMetadata' [tableData]='shareClassData[0]'></dyn-table>
+            </tab>
+            <tab title="FORECASTING">
+                <dyn-table [tableMetadata]='shareClassTableMetadata' [tableData]='shareClassData[1]'></dyn-table>
+            </tab>
+        </tab-group>
+    </div>
+<div>
+
+<sub-panel-group [subPanelGroupId]="'legalFundSubPnlLevel1'">
+    <panel [subPanelId]="'currRepartition'">
+        <h3>Currency distribution using base currency {{selectedCurrency.isoCode}}</h3>
+        <pie-chart [data]="pieData"></pie-chart>
+    </panel>
+</sub-panel-group>
