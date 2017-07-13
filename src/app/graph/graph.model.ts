@@ -27,3 +27,10 @@ export class PieSerie {
         return rslt;
     }
 }
+
+export class PlotSerie {
+
+    constructor(public name: string, public data: Array<number>) {
+    }
+
+}

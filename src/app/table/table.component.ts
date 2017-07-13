@@ -60,7 +60,7 @@ export class TableCell implements AfterContentInit {
                     </th>
                 </tr>
                 <tr *ngFor="let row of tableData">
-                    <td dyn-table-cell *ngFor="let column of tableMetadata.getColumnMetadataList()" [cellMetadata]="column" [cellValue]="row[column.fieldName]">
+                    <td dyn-table-cell *ngFor="let column of tableMetadata.getColumnMetadataList()" [cellMetadata]="column" [cellValue]="row[column.fieldName]" [attr.class]="tdCssClass(column)">
                     </td>
                 </tr>
              </table>`
@@ -68,6 +68,10 @@ export class TableCell implements AfterContentInit {
 export class DynamicTableComponent {
     @Input() public tableMetadata: TableMetadata;
     @Input() public tableData: Array<any>;
+
+    public tdCssClass(column: ITableColumnMetadata<any>) {
+        return (column.format.isLeftAlign) ? "tdLeftAlign" : "tdRightAlign";
+    }
 }
 
 

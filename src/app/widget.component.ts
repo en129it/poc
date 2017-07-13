@@ -10,7 +10,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
                         </ul>
                     </div>
                 </div>
-                <div style="height: 60px; padding-top: 15px;">
+                <div style="height: 40px; padding-top: 15px;">
                     <div class="autoCompleteSelection" *ngFor="let selection of selections">{{selection}}</div>
                 </div>
             `

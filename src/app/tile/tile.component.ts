@@ -15,6 +15,7 @@ export class TileComponent {
     @Input() public isCriteriaSpecified: boolean;
     @Output() public onClear = new EventEmitter<void>();
     @Output() public onActivationChanged = new EventEmitter<boolean>();
+    @Input() public additionalClass: string;
 
     public onClearEvent() {
         this.onClear.emit();
@@ -27,7 +28,7 @@ export class TileComponent {
 
 @Component({
     selector: 'tile-item',
-    template: `<div class="tileItem" (click)="onSelectionToggling($event)" [ngClass]="{tileSelected: isActive()}">
+    template: `<div [attr.class]="cssClasses()" (click)="onSelectionToggling($event)" [ngClass]="{tileSelected: isActive()}">
                     <div #anchor class="tileItemTitle">
                         <div class="title">{{title}}</div>
                         <span *ngIf="!toggleTile" class="clearButton" (click)="onClearEvent($event)">Clear</span>
@@ -44,6 +45,7 @@ export class TileItemComponent implements AfterViewInit {
     @Output() public onClear = new EventEmitter<void>();
     @Output() public onActivationChanged = new EventEmitter<boolean>();
     private isActiveOld = false;
+    @Input() public additionalClass: string;
 
     constructor() {
         this.isCriteriaSpecified = false;
@@ -56,16 +58,13 @@ export class TileItemComponent implements AfterViewInit {
 
     public onSelectionToggling(event: MouseEvent) {
         if ("DIV"==event.srcElement.tagName) {
-//            console.log("@@@@ onsSelectionToggling " + this.isCriteriaSpecified + " - " + this.isActive() + " event", event);
             if (this.toggleTile) {
                 this.isCriteriaSpecified = !this.isCriteriaSpecified;
             } else {
                 if (this.isCriteriaSpecified) {
                     this.isForceDeactivation = this.isActive();
-//                console.log("   @@@@ onsSelectionToggling " + this.isForceDeactivation);
                 }
             }
-//            this.onActivationChanged.emit(this.isCriteriaSpecified);
         }
     }
 
@@ -83,6 +82,14 @@ export class TileItemComponent implements AfterViewInit {
     public onClearEvent(): void {
         this.onClear.emit();
     }
+
+    public cssClasses(): string {
+        var rslt = "tileItem";
+        if (this.additionalClass) {
+            rslt += " " + this.additionalClass;
+        }
+        return rslt;
+    }
 }
 
 @Component({
@@ -90,7 +97,7 @@ export class TileItemComponent implements AfterViewInit {
     template: `<table>
                     <tr *ngFor="let row of rows, let rowIndex=index">
                         <td *ngFor="let col of row, let colIndex=index" [attr.colspan]="col.colSpan" [attr.rowspan]="col.rowSpan" [ngStyle]="{width: colPercentages(colIndex)}">
-                            <tile-item [content]="col.content" [title]="col.title" [isCriteriaSpecified]="col.isCriteriaSpecified" [toggleTile]="col.toggleTile" (onClear)="col.onClearEvent()" (onActivationChanged)="col.onActivationChangedEvent($event)"></tile-item>
+                            <tile-item [content]="col.content" [title]="col.title" [isCriteriaSpecified]="col.isCriteriaSpecified" [toggleTile]="col.toggleTile" [additionalClass]="col.additionalClass" (onClear)="col.onClearEvent()" (onActivationChanged)="col.onActivationChangedEvent($event)"></tile-item>
                         </td>
                     </tr>
                </table>

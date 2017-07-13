@@ -12,7 +12,7 @@ import { SubPanelService } from './service/subpanel.service';
 import { Currency, ShareClassSummary } from './service/general.model';
 import { MenuComponent } from './menu/menu.component';
 import { SubPanelTitleComponent, SubPanelGroupComponent, SubPanelComponent, PanelComponent } from './subpanel/subpanel.component';
-import { PieGraphComponent } from './graph/graph.component';
+import { PieGraphComponent, SerieGraphComponent } from './graph/graph.component';
 import { LegalFundPanel } from './legalFund.panel';
 import { AccountSearchPanel } from './accountSearch.panel';
 import { TileComponent, TileGroupComponent, TileItemComponent } from './tile/tile.component';
@@ -29,7 +29,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent, DynamicTableComponent, TableCell, TableHeaderCell, DefaultTableHeaderCellRenderer, DefaultTableCellRenderer, CellDirective,
     TabGroupComponent, TabComponent, TabBodyComponent, MenuComponent, SubPanelTitleComponent, SubPanelGroupComponent, SubPanelComponent, PanelComponent, PieGraphComponent,
-    LegalFundPanel, AccountSearchPanel, TileComponent, TileGroupComponent, TileItemComponent, AutoCompleteComponent,
+    LegalFundPanel, AccountSearchPanel, TileComponent, TileGroupComponent, TileItemComponent, AutoCompleteComponent, SerieGraphComponent,
     MyRootComponent, MyOtherComponent, MyComponent, MyDirective
   ],
   entryComponents: [

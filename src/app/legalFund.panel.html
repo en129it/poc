@@ -6,6 +6,7 @@
         <sub-panel-title [title]="'DISTRIBUTION BY CURRENCY'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'currRepartition'"></sub-panel-title>
         <sub-panel-title [title]="'CONTRIBUTING TRANSACTIONS'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'transactions'"></sub-panel-title>
         <sub-panel-title [title]="'HISTORY EVOLUTION'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'historyEvol'"></sub-panel-title>
+        <sub-panel-title [title]="'TOP 10 DEALERS'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'topDealers'"></sub-panel-title>
     </div>
     <div style="display: inline-block">
         <tab-group [selectedIndex]="selectedTabIndex" (onTabSelectionChange)="onTabSelectionChange($event)">
@@ -21,7 +22,15 @@
 
 <sub-panel-group [subPanelGroupId]="'legalFundSubPnlLevel1'">
     <panel [subPanelId]="'currRepartition'">
-        <h3>Currency distribution using base currency {{selectedCurrency.isoCode}}</h3>
+        <h2>Currency distribution using base currency {{selectedCurrency.isoCode}}</h2>
         <pie-chart [data]="pieData"></pie-chart>
+    </panel>
+    <panel [subPanelId]="'historyEvol'">
+        <h2>History evolution using base currency {{selectedCurrency.isoCode}}</h2>
+        <series-chart [data]="historyData"></series-chart>
+    </panel>
+    <panel [subPanelId]="'topDealers'">
+        <h2>Top 10 Dealers by amount</h2>
+        <dyn-table [tableMetadata]='dealerTableMetadata' [tableData]='dealerData'></dyn-table>
     </panel>
 </sub-panel-group>

@@ -1,11 +1,11 @@
 import { Component, OnInit, OnChanges, AfterViewInit, Input, SimpleChanges, SimpleChange, ViewChild, ElementRef } from '@angular/core';
-import { PieSerie, NamedValue } from './graph.model';
+import { PieSerie, NamedValue, PlotSerie } from './graph.model';
 declare var Highcharts: any;
 
 
 @Component({
     selector: 'pie-chart',
-    template: `<div #container id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>`
+    template: `<div #container id="container" style="min-width: 310px; height: 400px; width: 500px; margin: 0 auto; display: inline-block;"></div>`
 })
 export class PieGraphComponent implements OnInit, OnChanges, AfterViewInit {
     @Input() public data: PieSerie;
@@ -76,3 +76,56 @@ export class PieGraphComponent implements OnInit, OnChanges, AfterViewInit {
     }
 }
 
+@Component({
+    selector: 'series-chart',
+    template: `<div #container2 id="container2" style="min-width: 310px; height: 400px; width: 1000px; margin: 0 auto; display: inline-block;"></div>`
+})
+export class SerieGraphComponent implements OnInit, OnChanges, AfterViewInit {
+    @Input() public data: Array<PlotSerie>;
+    @ViewChild("container2") public containerElem: ElementRef; 
+    private isActive = false;
+
+    public ngAfterViewInit() {
+        this.isActive = true;
+        this.drawChart();
+    }
+
+    public ngOnInit() {
+        this.drawChart();
+    }
+
+    public ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+        for (let propName in changes) {
+            let changedProp = changes[propName];
+            let from = changedProp.previousValue;
+            let to = changedProp.currentValue;
+            if (propName=="data") {
+                this.drawChart();
+            }
+        }
+    }
+    private drawChart() {
+        Highcharts.chart(this.containerElem.nativeElement, {
+            title: {
+                text: ' '
+            },
+            yAxis: {
+                title: {
+                    text: ' Amount'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+            plotOptions: {
+                series: {
+                    pointStart: 2010
+                }
+            },
+
+            series: this.data
+        });
+    }
+}

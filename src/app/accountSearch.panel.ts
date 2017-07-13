@@ -12,7 +12,7 @@ import { DefaultTableHeaderMetadata, DefaultTableColumnMetadata } from './table/
                 <div>
                     <div class="tileContainer">
                         <tile-group [rowWidthPercentages]='rowWidthPercentages'>
-                            <tile [title]="'Blocking'" [rowIndex]="'0'" [rowSpan]="'3'" [colIndex]="'0'" [colSpan]="'1'" [isCriteriaSpecified]="isOneBlockingReasonSelected()" (onClear)="onClearBlockingReasons()" (onActivationChanged)="onBlockingReasonActivationChanged($event)">
+                            <tile [title]="'Blocking'" [additionalClass]="'tileMagenta'" [rowIndex]="'0'" [rowSpan]="'3'" [colIndex]="'0'" [colSpan]="'1'" [isCriteriaSpecified]="isOneBlockingReasonSelected()" (onClear)="onClearBlockingReasons()" (onActivationChanged)="onBlockingReasonActivationChanged($event)">
                                 <ul>
                                     <li><input type="checkbox" name="blocking" [checked]="isBlockingReasonSelected(1)" (change)="onBlockingReasonSelection(1)">Awaiting guardian's approval</li>
                                     <li><input type="checkbox" name="blocking" [checked]="isBlockingReasonSelected(2)" (change)="onBlockingReasonSelection(2)">Bankruptcy</li>
@@ -26,9 +26,9 @@ import { DefaultTableHeaderMetadata, DefaultTableColumnMetadata } from './table/
                                     <li><input type="checkbox" name="blocking" [checked]="isBlockingReasonSelected(512)" (change)="onBlockingReasonSelection(512)">Miscellaneous</li>
                                 </ul>
                             </tile>
-                            <tile [title]="'Zero Balance'" [toggleTile]="'true'" [rowIndex]="'3'" [rowSpan]="'1'" [colIndex]="'0'" [colSpan]="'1'" (onActivationChanged)="onZeroBalanceActivationChanged($event)">
+                            <tile [title]="'Zero Balance'" [additionalClass]="'tileMagenta'" [toggleTile]="'true'" [rowIndex]="'3'" [rowSpan]="'1'" [colIndex]="'0'" [colSpan]="'1'" (onActivationChanged)="onZeroBalanceActivationChanged($event)">
                             </tile>
-                            <tile [title]="'Account Name'" [rowIndex]="'0'" [rowSpan]="'1'" [colIndex]="'1'" [colSpan]="'1'" [isCriteriaSpecified]="isAccountNameSpecified()" (onClear)="onClearAccountName()" (onActivationChanged)="onAccountNameActivationChanged($event)">
+                            <tile [title]="'Account Name & Designation'" [rowIndex]="'0'" [rowSpan]="'1'" [colIndex]="'1'" [colSpan]="'1'" [isCriteriaSpecified]="isAccountNameSpecified()" (onClear)="onClearAccountName()" (onActivationChanged)="onAccountNameActivationChanged($event)">
                                 <input type="text" [(ngModel)]="accountName">
                             </tile>
                             <tile [title]="'Account Number'" [rowIndex]="'1'" [rowSpan]="'1'" [colIndex]="'1'" [colSpan]="'1'" [isCriteriaSpecified]="isAccountNumberSpecified()" (onClear)="onClearAccountNumber()" (onActivationChanged)="onAccountNumberActivationChanged($event)">
@@ -42,7 +42,7 @@ import { DefaultTableHeaderMetadata, DefaultTableColumnMetadata } from './table/
                             </tile>
                         </tile-group>
                         <div class="searchButtonBar">
-                            <button [disabled]="!isAtLeastOnCriteria()" (click)="applySearchCriteria()">Apply</button>
+                            <button [disabled]="!isAtLeastOnCriteria()" (click)="applySearchCriteria()">Search accounts</button>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { ITableHeaderMetadata, ITableHeaderCellRenderer, ITableCellRenderer, ITableColumnMetadata } from '../model/table.model'
+import { ITableHeaderMetadata, ITableHeaderCellRenderer, ITableCellRenderer, ITableColumnMetadata, ITableColumnCellParams } from '../model/table.model'
 
 //#############################################################################
 //#### Header #################################################################
@@ -25,7 +25,7 @@ export class DefaultTableHeaderCellRenderer implements ITableHeaderCellRenderer<
     public computeClasses(): string {
         var classes = "";
         classes += (this.data.isLeftAlign) ? "leftAlign" : "rightAlign";
-        classes += (this.data.stickToNeighboorColumn) ? "" : " space";
+        classes += (this.data.stickToNeighboorColumn) ? " minspace" : " space";
         return classes;
     }
     
@@ -43,7 +43,7 @@ export class DefaultTableHeaderMetadata implements ITableHeaderMetadata<DefaultT
 //#### Column #################################################################
 //#############################################################################
 
-class DefaultTableColumnCellParams {
+class DefaultTableColumnCellParams implements ITableColumnCellParams {
     constructor(public isLeftAlign: boolean, public stickToNeighboorColumn: boolean) {}
 }
 
@@ -64,7 +64,7 @@ export class DefaultTableCellRenderer implements ITableCellRenderer<DefaultTable
     public computeClasses(): string {
         var classes = "";
         classes += (this.format.isLeftAlign) ? "leftAlign" : "rightAlign";
-        classes += (this.format.stickToNeighboorColumn) ? "" : " space";
+        classes += (this.format.stickToNeighboorColumn) ? " minspace" : " space";
         return classes;
     }
 }

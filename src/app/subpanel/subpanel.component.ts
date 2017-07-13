@@ -26,11 +26,9 @@ export class SubPanelTitleComponent implements OnInit, SubPanelChangeListener, O
 
     public subPanelSelectionChanged(newSelectedSubPanelId: string) {
         this.isSelected = (newSelectedSubPanelId==this.subPanelId);
-        console.log(">>>>>>> subPanelSelectionChanged ", this.isSelected);
     }
 
     public onSelection(event): void {
-        console.log(">>>>>>> onSelection ", (this.isSelected ? null : this.subPanelId));
         this.subPanelService.subPanelSelectionChange(this.subPanelGroupId, this.isSelected ? null : this.subPanelId);
     }
 }
@@ -86,7 +84,6 @@ export class SubPanelGroupComponent implements OnInit, OnDestroy, SubPanelChange
     }
 
     subPanelSelectionChanged(newSelectedSubPanelId: string) {
-        console.log("# # # # # " + newSelectedSubPanelId);
         this.selectedSubPanelId = newSelectedSubPanelId;
     }
     

@@ -4,10 +4,10 @@ import { DefaultTableHeaderMetadata, DefaultTableColumnMetadata } from './table/
 import { TableMetadata, TableColumnGroupMetadata } from './table/model/table.model';
 import { TabGroupComponent, TabComponent } from './tab/tab.component';
 import { DataService } from './service/general.service';
-import { Currency, ShareClassSummary, SelectedCurrencyChangeListener } from './service/general.model';
+import { Currency, ShareClassSummary, SelectedCurrencyChangeListener, DealerPositionSummary, ShareClassPositionHistory } from './service/general.model';
 import { SubPanelTitleComponent, SubPanelGroupComponent, SubPanelComponent, PanelComponent } from './subpanel/subpanel.component';
-import { PieGraphComponent } from './graph/graph.component';
-import { PieSerie, NamedValue } from './graph/graph.model';
+import { PieGraphComponent, SerieGraphComponent } from './graph/graph.component';
+import { PieSerie, NamedValue, PlotSerie } from './graph/graph.model';
 import { MyRootComponent } from './test/test.component';
 
 
@@ -21,12 +21,15 @@ export class LegalFundPanel implements SelectedCurrencyChangeListener {
   shareClassTableMetadata : TableMetadata;
   shareClassData: Array<Array<any>>;
   public pieData : PieSerie;
+  public historyData: Array<PlotSerie>;
+  dealerTableMetadata : TableMetadata;
+  dealerData: Array<any>;
 
   constructor(private dataService: DataService) {
     this.selectedTabIndex = 0;
     this.dataService.subscribeSelectedCurrencyChange(this);
     this.selectedCurrency = dataService.getSelectedCurrency();
-    this.initShareClassMetadata();
+    this.initTablesMetadata();
     this.initShareClassData();
     this.initSubPanel();
   }
@@ -43,29 +46,49 @@ export class LegalFundPanel implements SelectedCurrencyChangeListener {
       this.initSubPanel();
   }
 
-  private initShareClassMetadata() {
+  private initTablesMetadata() {
     this.shareClassTableMetadata = new TableMetadata();
     this.shareClassTableMetadata.addColumnMetadata(new TableColumnGroupMetadata(
       new DefaultTableHeaderMetadata('Share class', true, true),
-      new DefaultTableColumnMetadata("className", false, false) 
+      new DefaultTableColumnMetadata("className", true, false) 
     ));
     this.shareClassTableMetadata.addColumnMetadata(new TableColumnGroupMetadata(
       new DefaultTableHeaderMetadata('Type', true, true),
-      new DefaultTableColumnMetadata("type", false, false) 
+      new DefaultTableColumnMetadata("type", true, false) 
+    ));
+    this.shareClassTableMetadata.addColumnMetadata(new TableColumnGroupMetadata(
+      new DefaultTableHeaderMetadata('Quantity', true, true),
+      new DefaultTableColumnMetadata("quantity", false, false)
+    ));
+    this.shareClassTableMetadata.addColumnMetadata(new TableColumnGroupMetadata(
+      new DefaultTableHeaderMetadata('Price', true, true),
+      new DefaultTableColumnMetadata("priceValue", false, false), 
+      new DefaultTableColumnMetadata("priceCurrency", true, true) 
     ));
     this.shareClassTableMetadata.addColumnMetadata(new TableColumnGroupMetadata(
       new DefaultTableHeaderMetadata('Position', true, true),
       new DefaultTableColumnMetadata("positionValue", false, false), 
-      new DefaultTableColumnMetadata("positionCurrency", false, false) 
+      new DefaultTableColumnMetadata("positionCurrency", true, true) 
     ));
     this.shareClassTableMetadata.addColumnMetadata(new TableColumnGroupMetadata(
       new DefaultTableHeaderMetadata('Position', true, true),
       new DefaultTableColumnMetadata("positionValueInRequestedCurrency", false, false), 
-      new DefaultTableColumnMetadata("requestedCurrency", false, false) 
+      new DefaultTableColumnMetadata("requestedCurrency", true, true) 
     ));
     this.shareClassTableMetadata.addColumnMetadata(new TableColumnGroupMetadata(
       new DefaultTableHeaderMetadata('Var', true, true),
       new DefaultTableColumnMetadata("variation", false, false) 
+    ));
+
+    this.dealerTableMetadata = new TableMetadata();
+    this.dealerTableMetadata.addColumnMetadata(new TableColumnGroupMetadata(
+      new DefaultTableHeaderMetadata('Dealer Name', true, true),
+      new DefaultTableColumnMetadata("dealerName", true, false) 
+    ));
+    this.dealerTableMetadata.addColumnMetadata(new TableColumnGroupMetadata(
+      new DefaultTableHeaderMetadata('Position', true, true),
+      new DefaultTableColumnMetadata("positionValue", false, false),
+      new DefaultTableColumnMetadata("positionCurrency", true, true) 
     ));
   }
 
@@ -89,8 +112,20 @@ export class LegalFundPanel implements SelectedCurrencyChangeListener {
 
     aggrCurrency.forEach( (value: number, key: string) => {
       this.pieData.addItem(new NamedValue(key, value));
-console.log("######## addPieItem ", value, key);      
+    });
+
+
+
+    this.dealerData = this.dataService.getDealerPositions('Shroder', this.selectedCurrency, (this.selectedTabIndex==0));
+
+
+
+    this.historyData = new Array<PlotSerie>();
+    var shareClassPositionHistory = this.dataService.getLegalFundPositionHistory('Shroder', this.selectedCurrency);
+    shareClassPositionHistory.forEach( (shareClassPositionHistory: ShareClassPositionHistory) => {
+      this.historyData.push(new PlotSerie(shareClassPositionHistory.className, shareClassPositionHistory.history));
     });
   }
+
 }
 

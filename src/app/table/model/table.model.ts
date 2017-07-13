@@ -23,7 +23,11 @@ export interface ITableCellRenderer<T> {
     init(rowIndex: number, columnIndex:number, format: T, value: any);
 }
 
-export interface ITableColumnMetadata<T> {
+export interface ITableColumnCellParams {
+    isLeftAlign: boolean;
+}
+
+export interface ITableColumnMetadata<T extends ITableColumnCellParams> {
     rendererType: Type<ITableCellRenderer<T>>;
     fieldName: string,
     format: T;
