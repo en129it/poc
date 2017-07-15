@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'
 import { ITableHeaderMetadata, ITableHeaderCellRenderer, ITableCellRenderer, ITableColumnMetadata, ITableColumnCellParams } from '../model/table.model'
+import { Utils } from '../../service/general.model'
 
 //#############################################################################
 //#### Header #################################################################
@@ -53,11 +54,16 @@ class DefaultTableColumnCellParams implements ITableColumnCellParams {
             </span>`,
 })
 export class DefaultTableCellRenderer implements ITableCellRenderer<DefaultTableColumnCellParams> {
-    public value: any;
+    public value: string;
     public format : DefaultTableColumnCellParams;
 
     init(cellRowIndex: number, cellColumnIndex:number, format: DefaultTableColumnCellParams, value: any) {
-        this.value = value;
+        if ('number'==typeof value) {
+            this.value = Utils.formatDecimalStr(value, 2);
+        } else {
+            this.value = value;
+        }
+
         this.format = format;
     }
 

@@ -44,7 +44,7 @@ tr {
     line-height: 36px;
 }
 
-td, th {
+dyn-table td, th {
     border-bottom: 1px solid black;
 }
 
@@ -303,4 +303,10 @@ button:disabled {
 account-search table {
     width: 100%;
     margin-top: 50px;
+}
+
+.fieldLabel {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
 }

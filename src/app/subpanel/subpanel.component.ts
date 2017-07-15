@@ -31,6 +31,16 @@ export class SubPanelTitleComponent implements OnInit, SubPanelChangeListener, O
     public onSelection(event): void {
         this.subPanelService.subPanelSelectionChange(this.subPanelGroupId, this.isSelected ? null : this.subPanelId);
     }
+
+    public forceSelection(): void {
+        this.isSelected = false;
+        this.onSelection(null);
+    }
+
+    public forceUnselection(): void {
+        this.isSelected = true;
+        this.onSelection(null);
+    }
 }
 
 @Component({
@@ -70,6 +80,7 @@ export class SubPanelComponent implements AfterViewInit {
 export class SubPanelGroupComponent implements OnInit, OnDestroy, SubPanelChangeListener {
     @ContentChildren(PanelComponent) public panels : QueryList<PanelComponent>;
     @Input() subPanelGroupId: string;
+    @Output() subPanelSelectionChangedEvent = new EventEmitter<string>();
     private subscription: Subscription;
     public selectedSubPanelId : string;
 
@@ -85,7 +96,11 @@ export class SubPanelGroupComponent implements OnInit, OnDestroy, SubPanelChange
 
     subPanelSelectionChanged(newSelectedSubPanelId: string) {
         this.selectedSubPanelId = newSelectedSubPanelId;
+        this.subPanelSelectionChangedEvent.emit(newSelectedSubPanelId);
     }
     
+    closeAll() {
+        this.selectedSubPanelId = null;
+    }
 }
 

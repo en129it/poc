@@ -3,10 +3,11 @@
 
 <div>   
     <div style="display: inline-block;" class="verticalMenu">
-        <sub-panel-title [title]="'DISTRIBUTION BY CURRENCY'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'currRepartition'"></sub-panel-title>
-        <sub-panel-title [title]="'CONTRIBUTING TRANSACTIONS'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'transactions'"></sub-panel-title>
+        <sub-panel-title [title]="'CURRENCY DISTRIBUTION'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'currRepartition'"></sub-panel-title>
+        <sub-panel-title [title]="'[CONTRIBUTING TRANSACTIONS]'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'transactions'"></sub-panel-title>
         <sub-panel-title [title]="'HISTORY EVOLUTION'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'historyEvol'"></sub-panel-title>
         <sub-panel-title [title]="'TOP 10 DEALERS'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'topDealers'"></sub-panel-title>
+        <sub-panel-title [title]="'INTER SHARE CLASS TRANSFERS'" [subPanelGroupId]="'legalFundSubPnlLevel1'" [subPanelId]="'interClassMov'"></sub-panel-title>
     </div>
     <div style="display: inline-block">
         <tab-group [selectedIndex]="selectedTabIndex" (onTabSelectionChange)="onTabSelectionChange($event)">
@@ -20,17 +21,61 @@
     </div>
 <div>
 
-<sub-panel-group [subPanelGroupId]="'legalFundSubPnlLevel1'">
+<sub-panel-group [subPanelGroupId]="'legalFundSubPnlLevel1'" (subPanelSelectionChangedEvent)="onLegalFundSubPnlLevel1SelectionChanged($event)">
     <panel [subPanelId]="'currRepartition'">
-        <h2>Currency distribution using base currency {{selectedCurrency.isoCode}}</h2>
-        <pie-chart [data]="pieData"></pie-chart>
+        <h2>Currency distribution (in base currency {{selectedCurrency.isoCode}})</h2>
+        <pie-chart [data]="currencyPieData"></pie-chart>
     </panel>
     <panel [subPanelId]="'historyEvol'">
-        <h2>History evolution using base currency {{selectedCurrency.isoCode}}</h2>
+        <h2>Share Class history evolution (in base currency {{selectedCurrency.isoCode}})</h2>
         <series-chart [data]="historyData"></series-chart>
     </panel>
     <panel [subPanelId]="'topDealers'">
         <h2>Top 10 Dealers by amount</h2>
-        <dyn-table [tableMetadata]='dealerTableMetadata' [tableData]='dealerData'></dyn-table>
+        <div>
+            <div style="display: inline-block">
+                <dyn-table [tableMetadata]='dealerTableMetadata' [tableData]='dealerData'></dyn-table>
+            </div>
+            <div style="display: inline-block">
+                <pie-chart [data]="dealerPieData"></pie-chart>
+            </div>
+        </div>
     </panel>
+    <panel [subPanelId]="'interClassMov'">
+        <div style="display: inline-block;" class="verticalMenu">
+            <sub-panel-title #shareClassDetailForTitle [title]="'SHARE CLASS DETAIL FOR'" [subPanelGroupId]="'interClassMovLevel1'" [subPanelId]="'shareClassLevel'"></sub-panel-title>
+            <select [(ngModel)]="selectedShareClassName" (ngModelChange)="onShareClassSelectionChange($event)">
+                <option *ngFor="let c of shareClassNames" [ngValue]="c">{{c}}</option>
+            </select>
+        </div>
+        <h2>Inter Share Classes transfers</h2>
+        <div>
+            <h3>Fund level consolidated volume in {{selectedCurrency.isoCode}}</h3>
+            <series-chart [data]="legalFundConsolidatedInterClassTransfer"></series-chart>
+        </div>
+        <sub-panel-group #interClassMovLevel1 [subPanelGroupId]="'interClassMovLevel1'" (subPanelSelectionChangedEvent)="onInterClassMovLevel1SelectionChanged($event)">
+            <panel [subPanelId]="'shareClassLevel'">
+                <div style="display: inline-block;" class="verticalMenu">
+                    <sub-panel-title #counterpartyDetailWithTitle [title]="'COUNTERPARTY DETAIL WITH'" [subPanelGroupId]="'interClassMovLevel2'" [subPanelId]="'counterpartyLevel'"></sub-panel-title>
+                    <select [(ngModel)]="selectedCounterpartyShareClassName" (ngModelChange)="onCounterpartyShareClassSelectionChange($event)">
+                        <option *ngFor="let c of counterpartyShareClassNames" [ngValue]="c">{{c}}</option>
+                    </select>
+                </div>
+                <div>
+                    <h3>Share class {{selectedShareClassName}} consolidated volume in {{selectedCurrency.isoCode}}</h3>
+                    <series-chart [data]="shareClassConsolidatedInterClassTransfer"></series-chart>
+                </div>
+                <sub-panel-group #interClassMovLevel2 [subPanelGroupId]="'interClassMovLevel2'">
+                    <panel [subPanelId]="'counterpartyLevel'">
+                        <div>
+                            <h3>Transfers between {{selectedShareClassName}} and {{selectedCounterpartyShareClassName}} in {{selectedCurrency.isoCode}}</h3>
+                            <series-chart [data]="counterpartyShareClassConsolidatedInterClassTransfer"></series-chart>
+                        </div>
+                    </panel>
+                </sub-panel-group>
+            </panel>
+        </sub-panel-group>
+    </panel>
+
+    
 </sub-panel-group>

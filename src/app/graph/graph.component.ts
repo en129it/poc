@@ -78,7 +78,7 @@ export class PieGraphComponent implements OnInit, OnChanges, AfterViewInit {
 
 @Component({
     selector: 'series-chart',
-    template: `<div #container2 id="container2" style="min-width: 310px; height: 400px; width: 1000px; margin: 0 auto; display: inline-block;"></div>`
+    template: `<div #container2 id="container2" style="height: 400px; width: 1100px;"></div>`
 })
 export class SerieGraphComponent implements OnInit, OnChanges, AfterViewInit {
     @Input() public data: Array<PlotSerie>;
@@ -106,6 +106,11 @@ export class SerieGraphComponent implements OnInit, OnChanges, AfterViewInit {
     }
     private drawChart() {
         Highcharts.chart(this.containerElem.nativeElement, {
+            chart: {
+                width: 1000,
+                plotLeft: 100,
+                spacing: [0, 100, 20, 40]  // top, right, bottom, left
+            },
             title: {
                 text: ' '
             },
