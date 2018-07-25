@@ -143,3 +143,16 @@ Passwords that were in use during the last XX months cannot be re-used
 Passwords may contain personal user information however that information is ignored when testing the password complexity strength. So if your first name is ‘Bob’ then password ‘BOB1234a@’ is not authorized because ignoring ‘BOB’ the password length is only 6 characters. Personal information includes:  
 
 Back button: redirects the user to the previous page
+
+
+
+
+
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+
+https://spring.io/guides/gs/messaging-redis/
+http://oppalove.com/2017/03/06/spring-boot-redis-json-examlpe/?i=1
